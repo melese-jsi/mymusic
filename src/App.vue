@@ -1,0 +1,101 @@
+<template>
+  <v-app>
+
+     <v-container>
+      <player-title-bar-vue></player-title-bar-vue>
+      <player-playlist-panel-vue :playlist="playlist" :selectedTrack="selectedTrack" @selecttrack="selectTrack"></player-playlist-panel-vue>
+       <player-controls-bars-vue @playtrack="play" @pausetrack="pause" @stoptrack="stop"></player-controls-bars-vue>
+     </v-container>
+
+
+
+
+
+
+  </v-app>
+</template>
+
+<script>
+import PlayerControlsBarsVue from './components/PlayerControlsBars.vue'
+import PlayerPlaylistPanelVue from './components/PlayerPlaylistPanel.vue'
+import PlayerTitleBarVue from './components/PlayerTitleBar.vue'
+
+
+
+  export default {
+    components:{
+      PlayerTitleBarVue,
+      PlayerPlaylistPanelVue,
+      PlayerControlsBarsVue
+    },
+    computed: {
+  currentTrack () {
+    return this.playlist[this.index]
+  }
+},
+    methods:{
+      selectTrack (track) {
+          this.selectedTrack = track
+          console.log("you selected track ",this.selectedTrack.howl)
+
+        },
+        play (index) {
+  let selectedTrackIndex = this.playlist.findIndex(track => track === this.selectedTrack)
+  if (typeof index === 'number') {
+    index = index
+  } else if (this.selectedTrack) {
+    if (this.selectedTrack != this.currentTrack) {
+      this.stop()
+    }
+    index = selectedTrackIndex
+  } else {
+    index = this.index
+  }
+  let track = this.playlist[index].howl
+  console.log("now we will play the track ",track)
+  if (track.playing()) {
+    return
+  } else {
+    track.play()
+  }
+
+  this.selectedTrack = this.playlist[index]
+  this.playing = true
+  this.index = index
+},
+pause () {
+  console.log("heeeey")
+  console.log(this.currentTrack.howl)
+  console.log(this.currentTrack.howl)
+  this.currentTrack.howl.pause()
+  this.playing = false
+},
+stop () {
+  this.currentTrack.howl.stop()
+  this.playing = false
+}
+    },
+    data(){
+
+      return{
+        index:0,
+        selectedTrack : null,
+        playlist: [
+            {title: "ephrem tamiru", artist: "Ephrem", howl: null, display: true},
+            {title: "neway debebe", artist: "Neway Debebe", howl: null, display: true}
+            ]
+      }
+    },
+
+    created: function () {
+  this.playlist.forEach( (track) => {
+    let file = track.title.replace(/\s/g, "_")
+    console.log(file)
+    track.howl = new Howl({
+      src: [`./playlist/${file}.mp3`]
+    })
+
+  })
+}
+  }
+</script>
