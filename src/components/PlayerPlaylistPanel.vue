@@ -6,7 +6,7 @@
           :key="track.title"
           v-show="track.display">
           <v-list-item-title @click="selectTrack(track)" @dblclick="playTrack(index)">
-            {{ index  }} {{ track.artist }} - {{ track.title }}
+            {{ index  }} {{ track.artist }} - {{ track.title }} --- {{ calcLengthOfSong(track)}}
           </v-list-item-title>
           <v-spacer></v-spacer>
           <!-- {{ track.howl.duration() }} -->
@@ -22,15 +22,20 @@
 
   },
   playTrack(index) {
+
   this.$emit('playtrack', index)
-  console.log(index)
-}
+
 },
-      computed:{
-        getDuration(dur){
-          return "xx"
+calcLengthOfSong(track){
+          let min = Math.floor(track.howl.duration()/60)
+          let extra = Math.floor(track.howl.duration()%60)
+          min = min <10? "0"+min:min
+          extra = extra <10? "0"+extra:extra
+          return min +":"+extra
         }
-      },
+
+},
+
       props: {
         playlist: Array,
         selectedTrack: Object

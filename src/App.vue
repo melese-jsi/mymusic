@@ -3,8 +3,8 @@
 
      <v-container>
       <player-title-bar-vue></player-title-bar-vue>
-      <player-playlist-panel-vue :playlist="playlist" :selectedTrack="selectedTrack" @selecttrack="selectTrack"></player-playlist-panel-vue>
-       <player-controls-bars-vue @playtrack="play" @pausetrack="pause" @stoptrack="stop"></player-controls-bars-vue>
+      <player-playlist-panel-vue :playlist="playlist" :selectedTrack="selectedTrack" @selecttrack="selectTrack" @playtrack="play"></player-playlist-panel-vue>
+       <player-controls-bars-vue  @playtrack="play" @pausetrack="pause" @stoptrack="stop" @skiptrack="skip"></player-controls-bars-vue>
      </v-container>
 
 
@@ -34,12 +34,36 @@ import PlayerTitleBarVue from './components/PlayerTitleBar.vue'
   }
 },
     methods:{
+      skip (direction) {
+  let index = 0
+  if (direction === "next") {
+    index = this.index + 1
+    if (index >= this.playlist.length) {
+      index = 0
+    }
+  } else {
+    index = this.index - 1
+    if (index < 0) {
+      index = this.playlist.length - 1
+    }
+  }
+  this.skipTo(index)
+},
+skipTo (index) {
+  if (this.currentTrack) {
+    this.currentTrack.howl.stop()
+  }
+  this.play(index)
+},
+
       selectTrack (track) {
           this.selectedTrack = track
           console.log("you selected track ",this.selectedTrack.howl)
 
         },
         play (index) {
+          console.log("playing ",index)
+
   let selectedTrackIndex = this.playlist.findIndex(track => track === this.selectedTrack)
   if (typeof index === 'number') {
     index = index
@@ -52,7 +76,7 @@ import PlayerTitleBarVue from './components/PlayerTitleBar.vue'
     index = this.index
   }
   let track = this.playlist[index].howl
-  console.log("now we will play the track ",track)
+
   if (track.playing()) {
     return
   } else {
@@ -81,8 +105,8 @@ stop () {
         index:0,
         selectedTrack : null,
         playlist: [
-            {title: "ephrem tamiru", artist: "Ephrem", howl: null, display: true},
-            {title: "neway debebe", artist: "Neway Debebe", howl: null, display: true}
+            {title: "kir alegne", artist: "Ephrem", howl: null, display: true},
+            {title: "alehu ene", artist: "Ephrem", howl: null, display: true}
             ]
       }
     },
