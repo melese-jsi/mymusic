@@ -99,9 +99,24 @@ stop () {
   this.playing = false
 }
     },
+    watch: {
+  playing(playing) {
+    this.seek = this.currentTrack.howl.seek()
+    let updateSeek
+    if (playing) {
+      updateSeek = setInterval(() => {
+        this.seek = this.currentTrack.howl.seek()
+      }, 250)
+    } else {
+      clearInterval(updateSeek)
+    }
+  },
+},
     data(){
 
       return{
+        seek:0,
+        playing:false,
         index:0,
         selectedTrack : null,
         playlist: [
