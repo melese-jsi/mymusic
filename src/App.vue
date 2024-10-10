@@ -4,7 +4,7 @@
      <v-container>
       <player-title-bar-vue></player-title-bar-vue>
       <player-playlist-panel-vue :playlist="playlist" :selectedTrack="selectedTrack" @selecttrack="selectTrack" @playtrack="play"></player-playlist-panel-vue>
-       <player-controls-bars-vue  @playtrack="play" @pausetrack="pause" @stoptrack="stop" @skiptrack="skip"></player-controls-bars-vue>
+       <player-controls-bars-vue  @playtrack="play" @pausetrack="pause" @stoptrack="stop" @skiptrack="skip" :loop="loop" @toggleloop="toggleLoop"></player-controls-bars-vue>
      </v-container>
 
 
@@ -23,6 +23,18 @@ import PlayerTitleBarVue from './components/PlayerTitleBar.vue'
 
 
   export default {
+    data(){
+
+        return{
+          loop:false,
+          index:0,
+          selectedTrack : null,
+          playlist: [
+              {title: "kir alegne", artist: "Ephrem", howl: null, display: true},
+              {title: "alehu ene", artist: "Ephrem", howl: null, display: true}
+              ]
+        }
+    },
     components:{
       PlayerTitleBarVue,
       PlayerPlaylistPanelVue,
@@ -34,6 +46,10 @@ import PlayerTitleBarVue from './components/PlayerTitleBar.vue'
   }
 },
     methods:{
+      toggleLoop(loop){
+        this.loop = loop
+      },
+
       skip (direction) {
   let index = 0
   if (direction === "next") {
@@ -99,6 +115,7 @@ stop () {
   this.playing = false
 }
     },
+<<<<<<< HEAD
     watch: {
   playing(playing) {
     this.seek = this.currentTrack.howl.seek()
@@ -125,13 +142,23 @@ stop () {
             ]
       }
     },
+=======
+  
+>>>>>>> f9e59e1a3310c7e29335956b4571491eee01d2cd
 
     created: function () {
   this.playlist.forEach( (track) => {
     let file = track.title.replace(/\s/g, "_")
     console.log(file)
     track.howl = new Howl({
-      src: [`./playlist/${file}.mp3`]
+      src: [`./playlist/${file}.mp3`],
+      onend: () => {
+        if (this.loop) {
+          this.play(this.index)
+        } else {
+          this.skip('next')
+        }   
+     }
     })
 
   })
