@@ -3,9 +3,11 @@
 
      <v-container>
       <player-title-bar-vue></player-title-bar-vue>
+      <player-info-panel-vue :trackInfo="getTrackInfo"></player-info-panel-vue>
       <player-playlist-panel-vue :playlist="playlist" :selectedTrack="selectedTrack" @selecttrack="selectTrack" @playtrack="play"></player-playlist-panel-vue>
-       <player-controls-bars-vue  @playtrack="play" @pausetrack="pause" @stoptrack="stop" @skiptrack="skip" :loop="loop" @toggleloop="toggleLoop"></player-controls-bars-vue>
-     </v-container>
+       <player-controls-bars-vue :progress="progress" @updateseek="setSeek" @playtrack="play" @pausetrack="pause" @stoptrack="stop" @skiptrack="skip" :loop="loop" @toggleloop="toggleLoop"></player-controls-bars-vue>
+
+      </v-container>
 
 
 
@@ -17,35 +19,51 @@
 
 <script>
 import PlayerControlsBarsVue from './components/PlayerControlsBars.vue'
+import PlayerInfoPanelVue from './components/PlayerInfoPanel.vue'
 import PlayerPlaylistPanelVue from './components/PlayerPlaylistPanel.vue'
 import PlayerTitleBarVue from './components/PlayerTitleBar.vue'
 
 
 
-  export default {
-    data(){
 
-        return{
-          loop:false,
-          index:0,
-          selectedTrack : null,
-          playlist: [
-              {title: "kir alegne", artist: "Ephrem", howl: null, display: true},
-              {title: "alehu ene", artist: "Ephrem", howl: null, display: true}
-              ]
-        }
-    },
+  export default {
+
     components:{
       PlayerTitleBarVue,
       PlayerPlaylistPanelVue,
-      PlayerControlsBarsVue
+      PlayerControlsBarsVue,
+      PlayerInfoPanelVue
     },
     computed: {
-  currentTrack () {
-    return this.playlist[this.index]
-  }
+      getTrackInfo(){
+          let artist = this.currentTrack.artist,
+          title = this.currentTrack.title,
+          seek = this.seek,
+          duration = this.currentTrack.howl.duration()
+        return {
+          artist,
+          title,
+          seek,
+          duration,
+        }
+      },
+      currentTrack () {
+        return this.playlist[this.index]
+      },
+      progress () {
+            if (this.currentTrack.howl.duration() === 0) return 0
+            return this.seek / this.currentTrack.howl.duration()
+          }
 },
     methods:{
+
+      setSeek (percents) {
+          let track = this.currentTrack.howl
+          console.log("percents",percents)
+          if (track.playing()) {
+            track.seek((track.duration() / 100) * percents)
+          }
+        },
       toggleLoop(loop){
         this.loop = loop
       },
@@ -115,7 +133,6 @@ stop () {
   this.playing = false
 }
     },
-<<<<<<< HEAD
     watch: {
   playing(playing) {
     this.seek = this.currentTrack.howl.seek()
@@ -132,6 +149,7 @@ stop () {
     data(){
 
       return{
+        loop:false,
         seek:0,
         playing:false,
         index:0,
@@ -142,9 +160,6 @@ stop () {
             ]
       }
     },
-=======
-  
->>>>>>> f9e59e1a3310c7e29335956b4571491eee01d2cd
 
     created: function () {
   this.playlist.forEach( (track) => {
@@ -157,7 +172,7 @@ stop () {
           this.play(this.index)
         } else {
           this.skip('next')
-        }   
+        }
      }
     })
 

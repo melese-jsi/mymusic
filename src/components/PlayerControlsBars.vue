@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar  height=90>
-      <v-btn @click="toggleMute"> 
+      <v-btn @click="toggleMute">
         <v-icon v-show="!muted" icon="mdi-volume-low"></v-icon>
         <v-icon v-show="muted" icon="mdi-volume-mute"></v-icon >
     </v-btn>
@@ -30,6 +30,11 @@
           <v-icon color="light-blue" v-if="loop" icon="mdi-repeat-once"></v-icon>
           <v-icon color="blue-grey" v-else icon="mdi-repeat"></v-icon>
       </v-btn>
+
+    </v-toolbar>
+    <v-toolbar elevation="8">
+       <v-progress-linear bg-color="blue-grey"
+       color="lime" height="10" striped clickable="true" model-value="trackProgress" @update:modelValue="updateSeek($event)" ></v-progress-linear>
     </v-toolbar>
   </div>
 </template>
@@ -37,17 +42,25 @@
 
 
 export default {
-  props:{
-    loop:Boolean
-  },
   created: function () {
   Howler.volume(this.volume)
 },
+props:{
+   progress:Number,
+   loop:Boolean
+},
   data(){
+
    return{
     volume:0.5,
     muted:false
    }
+  },
+  computed:{
+    trackProgress () {
+      console.log("progress ",this.progress)
+      return this.progress * 100
+     }
   },
   methods: {
     toggleLoop () {
@@ -58,10 +71,21 @@ export default {
       this.muted = !this.muted
       Howler.mute(this.muted)
     },
+
+    updateSeek (event) {
+      console.log("we are seeking")
+  let el = document.querySelector(".v-progress-linear"),
+      mousePos = event,
+      elWidth = el.clientWidth,
+      percents = (mousePos / elWidth) * 100
+      console.log("seeking",event,elWidth)
+  this.$emit('updateseek', percents)
+},
+
     updateVolume (volume) {
         Howler.volume(volume)
-        
-},
+
+     },
   playTrack(index) {
     this.$emit('playtrack', index)
   },
