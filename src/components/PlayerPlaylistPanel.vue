@@ -5,7 +5,8 @@
           v-for="(track, index) in playlist"
           :key="track.title"
           v-show="track.display">
-          <v-list-item-title @click="selectTrack(track)" @dblclick="playTrack(index)">
+          <!-- @dblclick="playTrack(index) -->
+          <v-list-item-title @click="selectTrack(track)" >
             {{ index  }} {{ track.artist }} - {{ track.title }} --- {{ calcLengthOfSong(track)}}
           </v-list-item-title>
           <v-spacer></v-spacer>
