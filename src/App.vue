@@ -20,18 +20,19 @@
         </template> -->
 
         <template v-slot:append>
-          <v-btn
-            color="grey-lighten-1"
+          <RouterLink
+
+            to="/albumDetail"
+          ><v-btn  color="grey-lighten-1"
             icon="mdi-information"
-            variant="text"
-          ></v-btn>
+            variant="text"></v-btn></RouterLink>
         </template>
       </v-list-item>
       </v-list>
 
-      <player-info-panel-vue :trackInfo="getTrackInfo"></player-info-panel-vue>
+      <!-- <player-info-panel-vue :trackInfo="getTrackInfo"></player-info-panel-vue>
       <player-playlist-panel-vue :playlist="playlist" :selectedTrack="selectedTrack" @selecttrack="selectTrack" @playtrack="play"></player-playlist-panel-vue>
-       <player-controls-bars-vue :progress="progress" @updateseek="setSeek" @playtrack="play" @pausetrack="pause" @stoptrack="stop" @skiptrack="skip" :loop="loop" @toggleloop="toggleLoop"></player-controls-bars-vue>
+       <player-controls-bars-vue :progress="progress" @updateseek="setSeek" @playtrack="play" @pausetrack="pause" @stoptrack="stop" @skiptrack="skip" :loop="loop" @toggleloop="toggleLoop"></player-controls-bars-vue> -->
 
       </v-container>
 

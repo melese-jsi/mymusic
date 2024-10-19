@@ -8,15 +8,16 @@
       </v-btn>
 
       <v-btn>
-        <v-icon>mdi-music-note</v-icon>
 
+
+        <RouterLink to="/app"><v-icon>mdi-music-note</v-icon></RouterLink>
         <span>Music</span>
       </v-btn>
 
       <v-btn>
         <v-icon>mdi-book</v-icon>
 
-        <span>Book</span>
+        <RouterLink to="/albumDetail">Book</RouterLink>
       </v-btn>
 
       <v-btn>
@@ -27,7 +28,7 @@
 
    </v-bottom-navigation>
    <v-main>
-      hello
+      <RouterView/>
    </v-main>
 
 

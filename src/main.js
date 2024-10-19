@@ -6,6 +6,7 @@
 
 // Plugins
 import { registerPlugins } from '@/plugins'
+import router from './router/index'
 
 // Components
 import App1 from './App1.vue'
@@ -17,6 +18,7 @@ const app = createApp(App1)
 
 registerPlugins(app)
 
+import {Howl,Howler } from 'howler'
 
-
+app.use(router)
 app.mount('#app')
