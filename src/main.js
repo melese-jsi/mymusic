@@ -8,15 +8,15 @@
 import { registerPlugins } from '@/plugins'
 
 // Components
-import App from './App.vue'
+import App1 from './App1.vue'
 
 // Composables
 import { createApp } from 'vue'
 
-const app = createApp(App)
+const app = createApp(App1)
 
 registerPlugins(app)
 
-import {Howl, Howler} from 'howler'
+
 
 app.mount('#app')

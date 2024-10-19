@@ -3,16 +3,37 @@
 
      <v-container>
       <player-title-bar-vue></player-title-bar-vue>
+      <v-list lines="two">
+      <v-list-subheader inset>Folders</v-list-subheader>
+
+      <v-list-item
+        v-for="folder in folders"
+        :key="folder.title"
+        :subtitle="folder.subtitle"
+        :title="folder.title"
+        :prependAvatar="folder.avatar"
+      >
+        <!-- <template v-slot:prepend>
+          <v-avatar color="grey-lighten-1">
+            <v-icon color="white">mdi-folder</v-icon>
+          </v-avatar>
+        </template> -->
+
+        <template v-slot:append>
+          <v-btn
+            color="grey-lighten-1"
+            icon="mdi-information"
+            variant="text"
+          ></v-btn>
+        </template>
+      </v-list-item>
+      </v-list>
+
       <player-info-panel-vue :trackInfo="getTrackInfo"></player-info-panel-vue>
       <player-playlist-panel-vue :playlist="playlist" :selectedTrack="selectedTrack" @selecttrack="selectTrack" @playtrack="play"></player-playlist-panel-vue>
        <player-controls-bars-vue :progress="progress" @updateseek="setSeek" @playtrack="play" @pausetrack="pause" @stoptrack="stop" @skiptrack="skip" :loop="loop" @toggleloop="toggleLoop"></player-controls-bars-vue>
 
       </v-container>
-
-
-
-
-
 
   </v-app>
 </template>
@@ -149,6 +170,24 @@ stop () {
     data(){
 
       return{
+        folders: [
+        {
+          subtitle: 'Jan 9, 2014',
+          title: 'Photos',
+          avatar:'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/93/e4/2f/93e42f25-866e-6b30-52d6-84804912fca3/859795619665_cover.jpg/592x592cc.webp'
+        },
+        {
+          subtitle: 'Jan 17, 2014',
+          title: 'Recipes',
+          avatar: 'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/93/e4/2f/93e42f25-866e-6b30-52d6-84804912fca3/859795619665_cover.jpg/592x592cc.webp'
+        },
+        {
+          subtitle: 'Jan 28, 2014',
+          title: 'Work',
+          avatar: 'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/93/e4/2f/93e42f25-866e-6b30-52d6-84804912fca3/859795619665_cover.jpg/592x592cc.webp'
+        },
+
+      ],
         loop:false,
         seek:0,
         playing:false,
